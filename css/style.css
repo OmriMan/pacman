@@ -207,17 +207,49 @@ a {
   overflow: hidden;
 }
 
-leftbox {
+.leftbox {
 float:left; 
 width:25%;
 }
-middlebox{
-float:center; 
-width:50%;
-height:50%;
+
+.middlebox{
+float:left; 
+width:40%;
 }
-rightbox{
+
+.rightbox{
 float:right;
 width:25%;
 height:50%;
+}
+
+.container_game {
+  width:600px;
+  height:190px;
+  padding-top:20px;
+  padding-left:15px;
+  padding-right:15px;
+}
+.st-box {
+  float:left;
+  width:180px;
+  height:160px;
+  background-color:white;
+  border:solid black;
+}
+.nd-box {
+  float:left;
+  width:600px;
+  height:600px;
+  background-color:white; 
+  border:solid black;
+  margin-left:20px;
+}
+.rd-box {
+  float:left;
+  margin-left: 300px;
+  width:180px;
+  height:160px;
+  background-color:white;
+  border:solid black;
 }
