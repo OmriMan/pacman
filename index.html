@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+		<script src="./jquery-3.4.1.slim.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<title>FUCK-MAN</title>
+		<script>
+	$().ready(function(){
+		$.validator.addMethod('mypassword', function(value, element) {
+        return this.optional(element) || (value.match(/[a-zA-Z]/) && value.match(/[0-9]/));
+    },
+    'Password must contain at least one numeric and one alphabetic character.');
+
+		$.validator.addMethod('myFullname', function(value, element) {
+        return this.optional(element) || (value.match(/[a-zA-Z]/) && !value.match(/[0-9]/));
+    },
+    'Full name must contain only alphabetic character.');
+
+
+ 
+	$("#signupForm").validate({
+	// in 'rules' user have to specify all the constraints for respective fields
+	rules : {
+		User_Name: {
+			required : true,
+			minlength : 2,
+		},
+		pwd: {
+			required : true,
+			minlength : 6,	
+			mypassword: true,
+			
+		},
+		confirm: {
+			required : true,
+			minlength : 6,
+			equalTo : "#pwd",
+		},
+		name : {
+			required : true,
+			myFullname: true,
+		},
+		email : {
+			required : true,
+			email : true
+		},
+		birthday: {
+			required : true,
+		},
+	massages: {
+		name: {
+			required : "Please enter your full name"
+		},
+		User_Name: {
+			required : "Please enter a username",
+			minlength : "Your user name must be consist of at least 2 characters"
+		},
+		pwd: {
+			required : "Please enter a password",
+			minlength : "Your password must be consist of at least 6 characters"
+		},
+		confirm: {
+			required : "Please enter a password",
+			minlength : "Your password must be consist of at least 6 characters",
+			equalTo : "Please enter the same password as above"
+		},
+	}
+	}		
+	});
+});
+		</script>
+	</head>
+
+
+	<body>
+		<!-- <div id="header">
+			<h1>Welcome to **C*MAN !<br>More than just a PACMAN</h1>
+		</div>  -->
+		<!-- menu -->
+		<div id = "menu">
+			<ul>
+				<!-- <img id="up" width="0" height="0" src="\photos\up.jpg">
+				<img id="down" width="0" height="0" src="\photos\down.jpg">
+				<img id="left" width="0" height="0" src="\photos\left.jpg">
+				<img id="right" width="0" height="0" src="\photos\right.jpg"> -->
+				<li><a><h2>About</h2></a></li>
+				<li><a href="#" onclick="showAndHideDivs('welcome');"><h2>Welcome</h2></a></li>
+				<li><a href="#" onclick="showAndHideDivs('register');"><h2>Register</h2></a></li>
+				<li><a href="#" onclick="showAndHideDivs('login');"><h2>Login</h2></a></li>
+				<li><a href="#" onclick="openAbout(); showMeWhatYouGot(event);"><h2>About</h2></a></li>
+				
+			</ul>
+		</div>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		
+		<div id="Welcome">
+			<div class="btn-group">
+				<button class="button_R" onclick="showAndHideDivs('register');"><span class="text">Register</span></button>
+				<button class="Button_L" onclick="showAndHideDivs('login');"><span class="text">Login</span></button>
+				<!-- <button>Sony</button> -->
+				</div>
+				<!-- <button class="button-64" role="button" onclick="show('Register','Welcome' ,'Login','About');"><span class="text">Register</span></button>
+				<br>
+				<button class="button-64" role="button" onclick="show('Login','Register' ,'Welcome','About');"><span class="text">Login</span></button> -->		  </div>
+		  <div id="Register" >
+			  <form id="signupForm" name="regi_form" action='javascript:register()'>
+				<div class="container">
+					<h2>Register Here</h2>
+					<p><b>Please fill in the details to create an account with us.</b></p>
+					<hr>
+					<label for="User_Name"><b>User Name</b></label><br>
+					<input type="text" id="User_Name" placeholder="User Name" name="User_Name"  ><br>
+					<label for="pwd"><b>Password</b></label><br>
+					<input type="password" id="pwd" placeholder="Enter Password" name="pwd" ><br>
+					<label for="confirm"><b>Confirm Password</b></label><br>
+					<input type="password" id="confirm" placeholder="Confirm Password" name="confirm" ><br>
+					<label for="name"><b>Full Name</b></label><br>
+					<input type="text" id="name" placeholder="Your Name" name="name" ><br>
+					<label for="email"><b>Enter Email</b></label><br>
+					<input type="text" id="email" placeholder="Enter Email" name="email" ><br>
+					<label for="birthday"><b>Birthday</b></label><br>
+					<input type="date" id="birthday" placeholder="Pick your date" id="birthday" name="birthday" min="1922-05-10" , max="2022-05-16" >
+					<p>
+						<input class="submit" type="submit" value="submit" onclick="register101()">
+						</p>			
+					<hr>
+					<!-- <ul> -->
+						<!-- <img id="up" width="0" height="0" src="\photos\up.jpg">
+						<img id="down" width="0" height="0" src="\photos\down.jpg">
+						<img id="left" width="0" height="0" src="\photos\left.jpg">
+						<img id="right" width="0" height="0" src="\photos\right.jpg"> -->
+						<!-- <li><a href="#" onclick="register();"><h2>Register</h2></a></li> -->
+						<!-- <li><a href="#" ><h2>Register</h2></a></li> -->
+
+						
+					<!-- </ul> -->
+					<!-- <button type="submit" class="registerbtn"><strong>Register</strong></button> -->
+				</div>
+				
+			</form>	
+		 </div>
+		  <div id="Login" >
+			  <form>
+				  <div class="container">
+					  <h2>Login</h2>
+					  <p><b>Please fill in the details to Login.</b></p>
+					<hr>
+					<label for="User_Name"><b>User Name</b></label><br>
+					<input type="text" id="User_Name_login" placeholder="User Name" name="User_Name_login" required><br>
+					<label for="pwd"><b>Password</b></label><br>
+					<input type="password" id="pwd_login" placeholder="Enter Password" name="pwd_login" required><br>
+					<ul>
+						<!-- <img id="up" width="0" height="0" src="\photos\up.jpg">
+							<img id="down" width="0" height="0" src="\photos\down.jpg">
+						<img id="left" width="0" height="0" src="\photos\left.jpg">
+						<img id="right" width="0" height="0" src="\photos\right.jpg"> -->
+						<li><a href="#" onclick="login(); default_controls();"><h2>Login</h2></a></li>
+						
+		
+					</ul>
+					<!-- <button type="submit" class="loginbtn" value="Login" onclick="login();"><strong>Login</strong></button> -->
+					<hr>
+				</div>
+
+			</form>
+		</div>
+
+		  <div id="Settings" >
+			  <table>
+				  <h2>Settings</h2>
+				  <form>
+					  <table>
+						  <tr>
+							  <b>Select your keys to move</b><br>
+							  <ul>
+								<!-- <img id="up" width="0" height="0" src="\photos\up.jpg">
+								<img id="down" width="0" height="0" src="\photos\down.jpg">
+								<img id="left" width="0" height="0" src="\photos\left.jpg">
+								<img id="right" width="0" height="0" src="\photos\right.jpg"> -->
+								<li><a href="#" onclick="default_controls(); "><h2>Default keys</h2></a></li>
+								<li><a href="#" onclick="random_opt(); "><h2>Random options</h2></a></li>
+								<!-- <li><a href="#" onclick="random_opt(); "><h2>random options</h2></a></li> -->
+		
+				
+							</ul>
+							  <!-- <button onclick="default_controls()"><strong>default keys</strong></button> -->
+							  <td>
+								  UP
+							  </td>
+							  <td>
+								  <input id="up" type="text" onkeydown="myKeyPress(event, 'up')"/> 
+							  </td>
+						  </tr>
+						  <tr>
+							<td>
+								DOWN
+							</td>
+							<td>
+							  <input id="down" type="text" onkeydown="myKeyPress(event, 'down')"/> 
+							</td>
+						</tr>
+						<tr>
+							<td>
+								RIGHT
+							</td>
+							<td>
+								<input id="right" type="text" onkeydown="myKeyPress(event, 'right')"/> 
+							</td>
+						</tr>
+						<tr>
+							<td>
+								LEFT
+							</td>
+							<td>
+							  <input id="left" type="text" onkeydown="myKeyPress(event, 'left')"/> 
+							</td>
+						</tr>
+					  </table>
+					  <table>
+						  <tr>
+							  <b>Choose number of balls</b><br>
+							  <ul>
+								  <td>
+									  Balls
+								  </td>
+								  <td>
+									  <input id="balls" type="text" placeholder="min 50 max 90" name="balls" required>
+								  </td>
+							  </ul>
+						  </tr>
+					  </table>
+					  <table>
+						<tr>
+							<b>Choose color for the balls</b><br>
+							<ul>
+								<td>
+									5 point ball
+								</td>
+								<td>
+									<select id="5_points">
+										<option value="green">Green</option>
+										<option value="yellow">Yellow</option>
+										<option value="red">Red</option>
+										<option value="blue">Blue</option>
+									</select>
+									<!-- <input id="color1" type="text" placeholder="min 50 max 90"> -->
+								</td>
+							</ul>
+							<ul>
+								<td>
+									15 point ball
+								</td>
+								<td>
+									<select id="15_points">
+										<option value="blue">Blue</option>
+										<option value="red">Red</option>
+										<option value="yellow">Yellow</option>
+										<option value="green">Green</option>
+									</select>
+									<!-- <input id="color1" type="text" placeholder="min 50 max 90"> -->
+								</td></ul>
+								<ul>
+								<td>
+									25 point ball
+								</td>
+								<td>
+									<select id="25_points">
+										<option value="red">Red</option>
+										<option value="blue">Blue</option>
+										<option value="yellow">Yellow</option>
+										<option value="green">Green</option>
+									</select>
+									<!-- <input id="color1" type="text" placeholder="min 50 max 90"> -->
+								</td>
+							</ul>
+						</tr>
+					</table>
+					<table>
+						<tr>
+							<b>Set time for the game (in seconds)</b><br>
+							<ul>
+								<td>
+									Time
+								</td>
+								<td>
+									<input id="game_time" type="text" placeholder="min 60 sec" required>
+								</td>
+							</ul>
+						</tr>
+					</table>
+					<table>
+						<tr>
+							<b>Choose number of monsters</b><br>
+							<ul>
+								<td>
+									Monsters
+								</td>
+								<td>
+									<input id="num_of_monsters" type="text" placeholder="min 1 max 4" required>
+								</td>
+							</ul>
+						</tr>
+					</table>
+					  <ul>
+						<li><a href="#" onclick="check_settings();"><h2>Start Game</h2></a></li>
+					</ul>
+					  
+					  <!-- <button onclick="check_settings()"><strong>Start Game</strong></button> -->
+				  </form>
+			  </table>
+		  </div>
+
+
+		  
+
+
+		  
+
+		  
+		  
+
+
+
+		  
+		  <div id="About" >
+	
+			<dialog id="dialog" name="dialog">
+				<button onclick="closeAbout()" style="float:right" >X</button>
+				<h2>YO Yo Yo</h2>
+			</dialog>
+
+			<!-- <div id="root">
+				<button id="modal-opener">Open Modal</button>
+			  </div>
+			  <div id="modal-root">
+				  <div class="modal">
+					  <button onclick="closeAbout()" style="float:right" >X</button>
+					<h2>YO Yo Yo</h2>
+				</div>
+			  </div> -->
+
+		  </div>
+		  
+		  
+		<div id="score" >
+			<label for="lblScore">SCORE:</label>
+			<input id="lblScore" type="text" />
+		</div>
+		<div id="time">
+			<label for="lblTime">TIME:</label>
+			<input id="lblTime" type="text" />
+		</div>
+		<div id="game">
+			<span style="padding-left: 150px;"></span><canvas id="life_canvas" height="100" width="600" ></canvas>
+			<br><middlebox><canvas id="canvas" height="600" width="600" style="border:5px solid green;"></canvas></middlebox>
+		</div>
+		<rightbox><div id="settings_side"  >
+				<p>You are the only one who <br>has chosen these settings : </p>
+				<p id="up_key">	&#8593; : &#8593;</p>
+				<p id="right_key">&#8594; : &#8594;</p>
+				<p id="down_key">&#8595; : &#8595;</p>
+				<p id="left_key">&#8592; : &#8592;</p>
+				<p id="balls_amount_side"> Number of balls : </p>
+				<p id="time_side">Game time : </p>
+				<p id="monster_number_side">Number of monsters</p>
+			</div></rightbox>
+	</body>
+	<script type="text/javascript" src="./app.js"></script>
+	<script type="text/javascript" src="./form.js"></script>
+</html>

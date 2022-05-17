@@ -1,0 +1,223 @@
+h1 {
+  width: 600px;
+  background-color: rgb(0, 150, 220);
+  color: white;
+font-size: 250%;
+text-align: center;
+border: white;
+border-width: 10px;
+  -webkit-text-stroke: 0.8px #c89666;
+  border-left: 5px #c89666 solid;
+  transition: border-width 0.4s;
+  border-radius: 15px 50px 30px;
+  
+}
+h1:hover {
+  border-width: 15px;
+
+}
+/* menu stuff */
+#menu
+{
+float: left;
+list-style-type: none; 
+margin: 0;
+padding-bottom: 7px;
+overflow: hidden;
+  background-color: rgb(0, 150, 220);
+width: 35%;
+height: 83px;
+background-size: cover;
+  border-radius: 30px 50px 15px;
+
+
+
+}
+li a {
+float: left;
+color: rgb(238, 227, 227);
+text-align: center;
+padding: 1px 16px;
+text-decoration: none;
+}
+li {
+
+list-style: none;
+display: inline-block;
+}
+
+li a:hover {
+float: right;
+background-color: rgb(169, 188, 240);
+}
+/* for the menu */
+
+
+
+
+
+
+.btn-group button {
+  background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+  border: 1px solid green; /* Green border */
+  color: white; /* White text */
+  padding: 10px 24px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  float: left; /* Float the buttons side by side */
+  color: #FFFFFF;
+  display: inline-flex;
+  margin: 0px;
+  font-family: cursive, sans-serif; /* text style */
+  font-size: 30px;
+  justify-content: center;
+  line-height: 1em;
+  max-width: 100%;
+  min-width: 140px;
+  padding: 3px;
+  margin-left: 95px;
+  
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.btn-group button:not(:last-child) {
+  border-right: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+
+.btn-group:active,
+.btn-group:hover {
+  outline: 0;
+}
+
+.btn-group span {
+  background-color: rgb(5, 6, 45);
+  padding: 16px 24px;
+  border-radius: 6px;
+  width: 100%;
+  height: 100%;
+  transition: 300ms;
+}
+
+
+.btn-group :hover span {
+  background: none;
+}
+@media (min-width: 768px) {
+  .btn-group {
+    font-size: 24px;
+    min-width: 196px;
+  }
+
+}
+
+
+/* for register and login */
+/* ----------------------------------------------------------------------------------- */
+.container {
+  padding: 16px;
+}
+
+/* Full-width input fields */
+.container input[type=text], input[type=password] {
+  width: 25%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Overwrite default styles of hr */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* Set a style for the submit/register button */
+.registerbtn {
+  background-color: #1384e0;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 15%;
+  opacity: 0.9;
+  border-radius: 20px;
+}
+
+.registerbtn:hover {
+  opacity:1;
+}
+
+/* Add a blue text color to links */
+a {
+  color: dodgerblue;
+}
+
+/* Set a grey background color and center the text of the "sign in" section */
+.signin {
+  background-color: #f1f1f1;
+  text-align: center;
+}
+
+
+
+.loginbtn {
+  background-color: #1384e0;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 15%;
+  opacity: 0.9;
+  border-radius: 20px;
+}
+
+.loginbtn:hover{
+    opacity: 1;
+}
+
+/* ------------------------------------------------------------------------------- */
+.avatar {
+  vertical-align: middle;
+  /* width: 70px;
+  height: 70px; */
+  border-radius: 50%;
+  transition: transform .2s;
+  overflow: hidden;
+}
+
+leftbox {
+float:left; 
+width:25%;
+}
+middlebox{
+float:center; 
+width:50%;
+height:50%;
+}
+rightbox{
+float:right;
+width:25%;
+height:50%;
+}
