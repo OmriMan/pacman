@@ -1,255 +1,411 @@
+
+
+body{
+  background: url(https://media.karousell.com/media/photos/products/2020/11/20/free_delivery__pac_man_gaming__1605873799_a13e1031_progressive.jpg);
+  background-size: 750;
+  background-position: -10px;
+  background-position: center center;
+  background-color: black;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  /* background-color: #c89666; */
+  margin: auto;
+  /* overflow: hidden;  */
+
+}
+
+
+.content {
+  max-width: 500px;
+  margin: auto;
+}
+
 h1 {
-  width: 600px;
-  background-color: rgb(0, 150, 220);
-  color: white;
-font-size: 250%;
-text-align: center;
-border: white;
-border-width: 10px;
-  -webkit-text-stroke: 0.8px #c89666;
-  border-left: 5px #c89666 solid;
-  transition: border-width 0.4s;
-  border-radius: 15px 50px 30px;
-  
+    width: 900px;
+    /* background-color: rgb(6, 116, 6); */
+    background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+
+    color: rgb(77, 77, 77);
+    font-size: 200%;
+    text-align: center;
+    border: white;
+    border-width: 10px;
+    -webkit-text-stroke: 0.8px #c89666;
+    border-left: 5px #c89666 solid;
+    transition: border-width 0.4s;
+    border-radius: 15px 50px 30px;
+    margin-inline-start: -160px;
+    
 }
 h1:hover {
-  border-width: 15px;
+    border-width: 15px;
 
 }
 /* menu stuff */
 #menu
-{
-float: left;
-list-style-type: none; 
-margin: 0;
-padding-bottom: 7px;
-overflow: hidden;
-  background-color: rgb(0, 150, 220);
-width: 35%;
-height: 83px;
-background-size: cover;
+ {
+	list-style-type: none; 
+  /* display: inline-block; */
+	margin: 0px;
+  margin-left: -185px;
+	padding-bottom: 0px;
+	overflow: hidden;
+  /* background-color: rgb(6, 116, 6); */
+  background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+  align-items: center;
+	width: 900px;
+	height: 22px;
+  padding-bottom:45px ;
+	/* background-size: cover; */
   border-radius: 30px 50px 15px;
 
 
-
-}
-li a {
-float: left;
-color: rgb(238, 227, 227);
-text-align: center;
-padding: 1px 16px;
-text-decoration: none;
-}
-li {
-
-list-style: none;
-display: inline-block;
-}
-
-li a:hover {
-float: right;
-background-color: rgb(169, 188, 240);
-}
-/* for the menu */
-
-
-
-
-
-
-.btn-group button {
-  background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
-  border: 1px solid green; /* Green border */
-  color: white; /* White text */
-  padding: 10px 24px; /* Some padding */
-  cursor: pointer; /* Pointer/hand icon */
-  float: left; /* Float the buttons side by side */
-  color: #FFFFFF;
-  display: inline-flex;
-  margin: 0px;
-  font-family: cursive, sans-serif; /* text style */
-  font-size: 30px;
-  justify-content: center;
-  line-height: 1em;
-  max-width: 100%;
-  min-width: 140px;
-  padding: 3px;
-  margin-left: 95px;
   
-  text-decoration: none;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-/* Clear floats (clearfix hack) */
-.btn-group:after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-.btn-group button:not(:last-child) {
-  border-right: none; /* Prevent double borders */
-}
-
-/* Add a background color on hover */
-
-.btn-group:active,
-.btn-group:hover {
-  outline: 0;
-}
-
-.btn-group span {
-  background-color: rgb(5, 6, 45);
-  padding: 16px 24px;
-  border-radius: 6px;
-  width: 100%;
-  height: 100%;
-  transition: 300ms;
-}
-
-
-.btn-group :hover span {
-  background: none;
-}
-@media (min-width: 768px) {
-  .btn-group {
-    font-size: 24px;
-    min-width: 196px;
   }
 
-}
+  li h3 {
+    margin-right: -50px;
+    float: left;
+    color: rgb(255, 255, 255);
+    font-size: 100%;
+    width: 390px;
+
+  }
+  li a {
+	float: right;
+	color: rgb(128, 216, 135);
+	text-align: center;
+	padding: 1px 16px;
+	text-decoration: none;
+  }
+  li {
+    /* background-color: rgb(6, 116, 6); */
+  background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+  list-style: none;
+	display: inline-block;
+  border-radius: 15px;
+  }
+  
+  li a:hover {
+	/* float: right; */
+	background-color: rgb(125, 55, 139);
+  background-image: linear-gradient(144deg,#008deb, #c0bcda 50%,#b481da);
+
+  border-radius: 15px;
+  }
+
+  li a h2 {
+    padding-bottom:0px ;
+  }
+  /* for the menu */
+
+
+  .errors {
+    color: white;
+
+ }
+
+
+
+
+  .btn-group button {
+    background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+    color: #FFFFFF;
+    display: inline-flex;
+    margin: 0px;
+    font-family: cursive, sans-serif; /* text style */
+    font-size: 30px;
+    justify-content: center;
+    line-height: 1em;
+    max-width: 100%;
+    min-width: 0px;
+    padding: 3px;
+    margin-top: 15px;
+    margin-left: 65px;
+    border-radius: 6px;
+    
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  
+  /* Clear floats (clearfix hack) */
+  .btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  
+  .btn-group button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+  }
+  
+  /* Add a background color on hover */
+
+  .btn-group:active,
+  .btn-group:hover {
+    outline: 0;
+  }
+  
+  .btn-group span {
+    background-color: rgb(5, 6, 45);
+    padding: 16px 24px;
+    border-radius: 6px;
+    width: 100%;
+    height: 100%;
+    transition: 300ms;
+  }
+
+
+  .btn-group :hover span {
+    background: none;
+  }
+  @media (min-width: 768px) {
+    .btn-group {
+      font-size: 24px;
+      min-width: 196px;
+    }
+
+  }
 
 
 /* for register and login */
 /* ----------------------------------------------------------------------------------- */
-.container {
-  padding: 16px;
+  /* .container {
+    padding: -600px;
+  } */
+  
+  /* Full-width input fields */
+  .container input[type=text], input[type=password] {
+    width: 45%;
+    padding: 5px;
+    margin: 5px 0 2px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
+  }
+  
+  input[type=text]:focus, input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+  }
+  
+  /* Overwrite default styles of hr */
+  hr {
+    border: 1px solid #f1f1f1;
+    margin-bottom: 25px;
+  }
+  
+  /* Set a style for the submit/register button */
+  .registerbtn {
+    background-color: #1384e0;
+    color: white;
+    padding: 16px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 15%;
+    opacity: 0.9;
+    border-radius: 20px;
+  }
+  
+  .registerbtn:hover {
+    opacity:1;
+  }
+  
+  /* Add a blue text color to links */
+  a {
+    color: dodgerblue;
+  }
+  
+  /* Set a grey background color and center the text of the "sign in" section */
+  .signin {
+    background-color: #f1f1f1;
+    text-align: center;
+  }
+
+
+
+  .loginbtn {
+    background-color: #1384e0;
+    color: white;
+    padding: 16px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 15%;
+    opacity: 0.9;
+    border-radius: 20px;
+  }
+
+  .loginbtn:hover{
+      opacity: 1;
+  }
+
+  /* ------------------------------------------------------------------------------- */
+  .avatar {
+    vertical-align: middle;
+    /* width: 70px;
+    height: 70px; */
+    border-radius: 50%;
+    transition: transform .2s;
+    overflow: hidden;
 }
 
-/* Full-width input fields */
-.container input[type=text], input[type=password] {
-  width: 25%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-  border: none;
-  background: #f1f1f1;
+
+
+h2 {
+  color: rgb(255, 255, 255);
+  font-size:100% ;
+  
 }
 
-input[type=text]:focus, input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
+b {
+  color: #FFFFFF;
+}
+p{
+  color: #FFFFFF;
+
 }
 
-/* Overwrite default styles of hr */
-hr {
-  border: 1px solid #f1f1f1;
-  margin-bottom: 25px;
+.game_stats {
+  /* margin-inline-start: -260px; */
+  margin-bottom: 450px;
+  margin-left: 500px;
 }
+.game{
+  /* margin-left: 600px; */
+  margin-bottom: 0px;
+}
+/* ------------------------------------------------------------------------------ */
+ .game_canvas{
+   background-color: black;
+ }
 
-/* Set a style for the submit/register button */
-.registerbtn {
-  background-color: #1384e0;
+ 
+ footer {
+  height: 60px;
+	display: flex;
+	justify-content: center;
+	align-items: left;
+  margin-left: 50px;
+	flex-direction: column;
+  position: fixed;
+  bottom: 10px;
+  width: 100%;
+  background-color: black;
   color: white;
-  padding: 16px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 15%;
-  opacity: 0.9;
-  border-radius: 20px;
-}
-
-.registerbtn:hover {
-  opacity:1;
-}
-
-/* Add a blue text color to links */
-a {
-  color: dodgerblue;
-}
-
-/* Set a grey background color and center the text of the "sign in" section */
-.signin {
-  background-color: #f1f1f1;
   text-align: center;
 }
 
-
-
-.loginbtn {
-  background-color: #1384e0;
-  color: white;
-  padding: 16px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 15%;
-  opacity: 0.9;
-  border-radius: 20px;
+.pagination {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	--ddim: 10px;
+	--rd: 15px;
+	--rdim: calc(var(--rd)*2);
+	--pm: #ffff03;
 }
 
-.loginbtn:hover{
-    opacity: 1;
+.pagination label {
+	content: '';
+	margin: 0 10px;
+	height: var(--ddim);
+	width: var(--ddim);
+	background: #f7b997;
+	cursor: pointer;
 }
 
-/* ------------------------------------------------------------------------------- */
-.avatar {
-  vertical-align: middle;
-  /* width: 70px;
-  height: 70px; */
-  border-radius: 50%;
-  transition: transform .2s;
-  overflow: hidden;
+.pagination label:first-child {margin-left: 0;}
+.pagination label:last-child {margin-right: 0;}
+.pagination input {display: none;}
+
+.pacman {
+	content: '';
+	position: absolute;
+	top: calc(-1*var(--ddim));
+	left: calc(-1*var(--ddim)/2);
+	height: var(--rdim);
+	width: var(--rdim);
+	transition: transform 250ms linear;
 }
 
-.leftbox {
-float:left; 
-width:25%;
+.pacman:before,
+.pacman:after {
+	content: '';
+	position: absolute;
+	height: var(--rd);
+	width: var(--rdim);
+	left: 0;
+	background: var(--pm);
+	transition: inherit;
 }
 
-.middlebox{
-float:left; 
-width:40%;
+.pacman:before {
+	top: 0;
+	border-top-left-radius: var(--rdim);
+	border-top-right-radius: var(--rdim);
+	transform-origin: bottom center;
+	transform: rotate(-45deg);
 }
 
-.rightbox{
-float:right;
-width:25%;
-height:50%;
+.pacman:after {
+	bottom: 0;
+	border-bottom-left-radius: var(--rdim);
+	border-bottom-right-radius: var(--rdim);
+	transform-origin: top center;
+	transform: rotate(45deg);
 }
 
-.container_game {
-  width:600px;
-  height:190px;
-  padding-top:20px;
-  padding-left:15px;
-  padding-right:15px;
+@keyframes waka {
+	0% {}
+	50% {transform: rotate(0);}
+	100% {}
 }
-.st-box {
-  float:left;
-  width:180px;
-  height:160px;
-  background-color:white;
-  border:solid black;
+
+input[type="radio"]:hover ~ .pacman:before,
+input[type="radio"]:hover ~ .pacman:after {
+	animation: waka 500ms infinite;
 }
-.nd-box {
-  float:left;
-  width:600px;
-  height:600px;
-  background-color:white; 
-  border:solid black;
-  margin-left:20px;
+
+input[id="dot-1"]:checked ~ .pacman {transform: translateX(var(--ddim));}
+input[id="dot-2"]:checked ~ .pacman {transform: translateX(calc(var(--ddim) + var(--rdim)));}
+input[id="dot-3"]:checked ~ .pacman {transform: translateX(calc(var(--ddim) + var(--rdim)*2));}
+input[id="dot-4"]:checked ~ .pacman {transform: translateX(calc(var(--ddim) + var(--rdim)*3));}
+input[id="dot-5"]:checked ~ .pacman {transform: translateX(calc(var(--ddim) + var(--rdim)*4));}
+input[id="dot-6"]:checked ~ .pacman {transform: translateX(calc(var(--ddim) + var(--rdim)*5));}
+input[id="dot-7"]:checked ~ .pacman {transform: translateX(calc(var(--ddim) + var(--rdim)*6));}
+input[id="dot-8"]:checked ~ .pacman {transform: translateX(calc(var(--ddim) + var(--rdim)*7));}
+input[id="dot-9"]:checked ~ .pacman {transform: translateX(calc(var(--ddim) + var(--rdim)*8));}
+input[id="dot-10"]:checked ~ .pacman {transform: translateX(calc(var(--ddim) + var(--rdim)*9));}
+input[id="dot-11"]:checked ~ .pacman {transform: translateX(calc(var(--ddim) + var(--rdim)*10));}
+input[id="dot-12"]:checked ~ .pacman {transform: translateX(calc(var(--ddim) + var(--rdim)*11));}
+input[id="dot-13"]:checked ~ .pacman {transform: translateX(calc(var(--ddim) + var(--rdim)*12));}
+
+.freeText b{
+  margin-left: -100px;
+  
 }
-.rd-box {
-  float:left;
-  margin-left: 300px;
-  width:180px;
-  height:160px;
-  background-color:white;
-  border:solid black;
+
+.About b{
+  color: black;
 }
+
+/* 
+.start_btn{
+
+  position: absolute;
+  left: 180px;
+  top: 50%;
+} */
+
+
