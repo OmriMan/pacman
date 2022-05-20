@@ -119,6 +119,7 @@ function login() {
         // checking if the password is correct
         if (users[user_name] == password){
             window.alert("Welcome back and enjoy the game.")
+            connected_name = user_name;
             showAndHideDivs("settings")
             //showsettings()
             //showgame()
@@ -136,6 +137,10 @@ function login() {
         window.alert("The user name dosent exist in the system, please try again.")
 
     }
+}
+
+function update_player_name(){
+    $('#player_name').html('<h2 style="color: #f1f1f1;">'+"Player Name: " + connected_name + '</h2>')
 }
 
 
@@ -248,6 +253,41 @@ function setControls(u , d ,r ,l){
 }
 
 
+// window.addEventListener('load', setup);
+
+// const get = document.getElementById.bind(document);
+// const query = document.querySelector.bind(document);
+// let modalRoot = get('modal-root');
+// let button = get('modal-opener');
+// let modal = query('.modal');
+
+
+// function setup() {
+  
+//   let modalRoot = get('modal-root');
+//   let button = get('modal-opener');
+//   let modal = query('.modal');
+  
+//   modalRoot.addEventListener('click', rootClick);
+//   button.addEventListener('click', openModal);
+//   modal.addEventListener('click', modalClick);
+  
+//   function rootClick() {
+//     modalRoot.classList.remove('visible');
+//   }
+  
+//   function openModal() {
+//     modalRoot.classList.add('visible');
+//   }
+  
+//   function modalClick(e) {
+//     e.preventDefault();
+//     e.stopPropagation();
+//     e.stopImmediatePropagation();
+//     return false;
+//   }
+  
+// }
 
 
 function openAbout() {

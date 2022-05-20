@@ -120,6 +120,9 @@ life.image.src = "./photos/life.png";
 //sounds
 var ghost_sound = new Audio("./sound/ghost_sound.mp3");
 var ball_pick_sound=new Audio("./sound/ball_pick.mp3");
+var game_song = new Audio("./sound/song.mp3");
+var end_music = new Audio("./sound/end_music.wav");
+
 
 
 var ans
@@ -137,6 +140,8 @@ function Start() {
 	var killId = setTimeout(function() {
 		for (var i = killId; i > 0; i--) clearInterval(i)
 	  }, 10);
+	game_song = new Audio("./sound/song.mp3");
+	game_song.play();
 	game_timer_app = document.getElementById("game_time");
 	UpdateSideSettingsMenuValues();
 	board = new Array();
@@ -365,7 +370,6 @@ function Start() {
 	interval = setInterval(UpdatePosition,interval_time);
 	interval_ghosts = setInterval(UpdatePositionGhosts,interval_ghosts_time);
 	interval_move_50 = setInterval(UpdatePosition50PointsCharacter,interval_move_50_time);
-	//interval_clock = setInterval(UpdatePositionClockBonus,889);
 }
 
 function findRandomEmptyCell(board) {
@@ -553,10 +557,10 @@ function UpdatePosition() {
 			move_50_points.showGhost=false;
 			window.clearInterval(interval_move_50);
 		}else if(board[shape.i][shape.j]==12) {
-			board[shape.i][shape.j] = clock_bonus_sec.sleep;
 			time_elapsed = time_elapsed -5;
+			board[shape.i][shape.j] = clock_bonus_sec.sleep;
 			//TODO: Notify user!!!
-			clock_bonus_sec.showGhost=false;
+			//clock_bonus_sec.showGhost=false;
 		}else if(board[shape.i][shape.j]==13) {	
 			//TODO: Notify user!!!
 			board[shape.i][shape.j] = good_drug.sleep;
@@ -603,7 +607,6 @@ function UpdatePosition() {
 			}
 		}else if (board[shape.i][shape.j]>=7 && board[shape.i][shape.j]<=10) {
 			GoIntoGhost();
-			return;
 		}
 
 		board[shape.i][shape.j] = 2;
@@ -648,6 +651,7 @@ function showAndHideDivs(currentScreen)
 			$('#About').hide();
 			$('#score').hide();
 			$('#time').hide();
+			$('#player_name').hide();			
 			$('#game').hide();
 			$('#settings_side').hide();
 			$('#footer').show();
@@ -661,6 +665,7 @@ function showAndHideDivs(currentScreen)
 			$('#About').hide();
 			$('#score').hide();
 			$('#time').hide();
+			$('#player_name').hide();
 			$('#game').hide();
 			$('#settings_side').hide();
 			$('#footer').show();
@@ -674,6 +679,7 @@ function showAndHideDivs(currentScreen)
 			$('#About').hide();
 			$('#score').hide();
 			$('#time').hide();
+			$('#player_name').hide();
 			$('#game').hide();
 			$('#settings_side').hide();
 			$('#footer').show();
@@ -688,6 +694,7 @@ function showAndHideDivs(currentScreen)
 			$('#About').show();
 			$('#score').hide();
 			$('#time').hide();
+			$('#player_name').hide();
 			$('#game').hide();
 			$('#settings_side').hide();
 			$('#footer').show();
@@ -703,6 +710,7 @@ function showAndHideDivs(currentScreen)
 			$('#Settings').show();
 			$('#score').hide();
 			$('#time').hide();
+			$('#player_name').hide();
 			$('#game').hide();
 			$('#settings_side').hide();
 			$('#footer').show();
@@ -719,6 +727,7 @@ function showAndHideDivs(currentScreen)
 			$('#Settings').hide();
 			$('#score').show();
 			$('#time').show();
+			$('#player_name').show();
 			$('#game').show();
 			$('#footer').hide();
 			context = canvas.getContext("2d");
@@ -758,10 +767,10 @@ function UpdatePositionGhosts() {
 			GhostStep(ghost_red);
 		}
 		if(clock_bonus_sec.showGhost) {// && Math.round(time_elapsed)%7==0) {
+			var last_clock_location = board[clock_bonus_sec.i][clock_bonus_sec.j];
 			board[clock_bonus_sec.i][clock_bonus_sec.j] = clock_bonus_sec.sleep;
-			if (board[clock_bonus_sec.i][clock_bonus_sec.j] == 2) {
-				// board[clock_bonus_sec.i][clock_bonus_sec.j] = clock_bonus_sec.sleep;
-				clock_bonus_sec.showGhost=false;
+			if (board[clock_bonus_sec.i][clock_bonus_sec.j] == 2 || last_clock_location == 2) {
+				//clock_bonus_sec.showGhost=false;
 				time_elapsed = time_elapsed -5;
 				// board[clock_bonus_sec.i][clock_bonus_sec.j] = 0;
 			} else if (Math.round(time_elapsed)%7==0){
@@ -770,8 +779,9 @@ function UpdatePositionGhosts() {
 			}
 		}
 		if(good_drug.showGhost) { //&& Math.round(time_elapsed)%13==0) {
+			var last_good_location = board[good_drug.i][good_drug.j];
 			board[good_drug.i][good_drug.j] = good_drug.sleep;
-			if (board[good_drug.i][good_drug.j] == 2) {
+			if (board[good_drug.i][good_drug.j] == 2 || last_good_location ==2) {
 				good_drug.showGhost=false;
 				lives+=1;
 			} else if(Math.round(time_elapsed)%13==0){
@@ -785,6 +795,7 @@ function UpdatePositionGhosts() {
 				[coca.i,coca.j] = findRandomEmptyCell(board);				
 			}
 			board[coca.i][coca.j]=coca.id;
+			
 		}	
 		Draw();
 	}
@@ -833,20 +844,6 @@ function UpdatePosition50PointsCharacter(){
 	}
 }
 
-function UpdatePositionClockBonus(){
-	if(clock_bonus_sec.showGhost && !paused && game_on) {
-		board[clock_bonus_sec.i][clock_bonus_sec.j] = clock_bonus_sec.sleep;
-		if (board[clock_bonus_sec.i][clock_bonus_sec.j] == 2) {
-			clock_bonus_sec.showGhost=false;
-            time_elapsed = time_elapsed -5;			
-			board[clock_bonus_sec.i][clock_bonus_sec.j] = 0;
-		} else {
-			[clock_bonus_sec.i,clock_bonus_sec.j] = findRandomEmptyCell(board);
-			board[clock_bonus_sec.i][clock_bonus_sec.j]=clock_bonus_sec.id;
-		}
-		Draw();
-	}
-}
 
 function GhostLocationReset() {//set ghost location to grid corners
 	if (ghost_pink.showGhost==true) {
@@ -940,7 +937,7 @@ function GoIntoGhost() {
 	board[shape.i][shape.j]=0;
 	[shape.i,shape.j] = findRandomEmptyCell(board);
 	board[shape.i][shape.j] =2;
-	Draw();
+	//Draw();
 }
 
 function UpdateSideSettingsMenuValues() {
@@ -963,11 +960,15 @@ function UpdateSideSettingsMenuValues() {
 }
 
 function End() {
+	game_song.pause();
+	end_music.play();
 	var killId = setTimeout(function() {
 		for (var i = killId; i > 0; i--) clearInterval(i)
-	  }, 10);
+	}, 10);
 	var msg;
-	if (time_elapsed>=game_timer_app.value) {
+	if (score>=total_points) {
+		msg = "WINNER ! \n SCORE : " + score.toString() +"\nTIME : " + time_elapsed.toString();
+	} else if (time_elapsed>=game_timer_app.value) {
 		if (lives==0) {
 			msg="Loser !";
 		} else if(score<100) {
@@ -975,12 +976,13 @@ function End() {
 		} else {
 			msg="Winner !";
 		}
+	}
+	if (lives==0) {
+		msg="Loser !";
+	} else if(score<100) {
+		msg = "Yoy are better than " + score + " points !";
 	} else {
-		if (score>=total_points) {
-			msg = "WINNER ! \n SCORE : " + score.toString() +"\nTIME : " + time_elapsed.toString();
-		} else {
-			msg = "Game Over ! \nYOU LOSE ! \nSCORE : " + score.toString() +"\nTIME : " + time_elapsed.toString();
-		}
+		msg="Winner !";
 	}
 	window.alert(msg);
 	time_elapsed =0;
