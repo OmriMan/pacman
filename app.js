@@ -1,5 +1,7 @@
 var context;
 var shape = new Object();
+shape.i=1;
+shape.j=4;
 var board;
 var score;
 var pac_color;
@@ -12,11 +14,8 @@ var eye_x = 5;
 var eye_y =15;
 var total_points =50;
 var food_remain;
-
-var img = new Image();
-img.src = "./photos./right_circle.png"
-// var img = document.getElementById("right");
-var avatar_style;
+var game_on = false;
+var paused = true;
 
 //cell size
 var height_cell = 60;
@@ -29,7 +28,7 @@ var interval_ghosts;
 //pink
 var ghost_pink = new Object();
 ghost_pink.image = new Image(width_cell-4,height_cell-4);
-ghost_pink.image.src = "./photos/ghost_pink.jpg";
+ghost_pink.image.src = "./photos/ghost_pink.png";
 ghost_pink.id=7;
 ghost_pink.showGhost =true;
 ghost_pink.sleep = 0;
@@ -38,7 +37,7 @@ ghost_pink.j=0;
 //blue
 var ghost_blue = new Object();
 ghost_blue.image = new Image(width_cell-4,height_cell-4);
-ghost_blue.image.src = "./photos/ghost_blue.jpg";
+ghost_blue.image.src = "./photos/ghost_blue.png";
 ghost_blue.id=8;
 ghost_blue.showGhost =true;
 ghost_blue.sleep = 0;
@@ -47,7 +46,7 @@ ghost_blue.j=9;
 //orange
 var ghost_orange = new Object();
 ghost_orange.image = new Image(width_cell-4,height_cell-4);
-ghost_orange.image.src = "./photos/ghost_orange.jpg";
+ghost_orange.image.src = "./photos/ghost_orange.png";
 ghost_orange.id=9;
 ghost_orange.showGhost =true;
 ghost_orange.sleep = 0;
@@ -56,7 +55,7 @@ ghost_orange.j=9;
 //red
 var ghost_red = new Object();
 ghost_red.image = new Image(width_cell-4,height_cell-4);
-ghost_red.image.src = "./photos/ghost_red.jpg";
+ghost_red.image.src = "./photos/ghost_red.png";
 ghost_red.id=10;
 ghost_red.showGhost =true;
 ghost_red.sleep = 0;
@@ -67,7 +66,7 @@ ghost_red.j=0;
 var interval_move_50;
 //50 points moving (cherry image)
 var move_50_points = new Object();
-move_50_points.image = new Image(width_cell,height_cell);
+move_50_points.image = new Image(width_cell-4,height_cell-4);
 move_50_points.image.src = "./photos/cherry.png";
 move_50_points.id=11;
 move_50_points.showGhost = true;
@@ -79,7 +78,7 @@ move_50_points.j=5;
 var interval_clock;
 //5 sec clock_bonus (clock_bonus image)
 var clock_bonus_sec = new Object();
-clock_bonus_sec.image = new Image(width_cell,height_cell);
+clock_bonus_sec.image = new Image(width_cell-4,height_cell-4);
 clock_bonus_sec.image.src = "./photos/clock_image.png";
 clock_bonus_sec.id=12;
 clock_bonus_sec.showGhost = true;
@@ -89,13 +88,23 @@ clock_bonus_sec.j=5;
 
 //good drug = add live to user
 var good_drug = new Object();
-good_drug.image = new Image(width_cell,height_cell);
-good_drug.image.src = "./photos/good_drug.png";
+good_drug.image = new Image(width_cell-4,height_cell-4);
+good_drug.image.src = "./photos/good_drug_.png";
 good_drug.id=13;
 good_drug.showGhost = true;
 good_drug.sleep = 0;
 good_drug.i=7;
 good_drug.j=7;
+
+var coca = new Object();
+coca.image = new Image(width_cell-4,height_cell-4);
+coca.image.src = "./photos/coca.png";
+coca.id=14;
+coca.showGhost = true;
+coca.sleep = 0;
+coca.i=1;
+coca.j=9;
+
 
 //lives
 var lives=5;
@@ -109,6 +118,9 @@ life.image.src = "./photos/life.png";
 var ghost_sound = new Audio("./sound/ghost_sound.mp3");
 var ball_pick_sound=new Audio("./sound/ball_pick.mp3");
 
+
+var ans
+
 $(document).ready(function() {
 
 	showAndHideDivs("welcome")
@@ -118,22 +130,28 @@ $(document).ready(function() {
 });
 
 
-function Start(restart=false) {
+function Start() {
+	var killId = setTimeout(function() {
+		for (var i = killId; i > 0; i--) clearInterval(i)
+	  }, 10);
 	game_timer_app = document.getElementById("game_time");
 	UpdateSideSettingsMenuValues();
 	board = new Array();
 	score = 0;
 	pac_color = "yellow";
 	var cnt = 100;
-	// img = document.getElementById("right");
+	game_on = true;
+	paused = false;
 
 	var pacman_remain = 1;
 	start_time = new Date();
 	// ConfigureGame();
+	GhostAmount = 2;// TODO: update this after marge with element id
+	GhostAmount = document.getElementById("num_of_monsters").value;// TODO: update this after marge with element id
 	//food_remain = 50;//TODO : update this with element ID from index.html
 	food_remain = document.getElementById("balls").value;
-	if (food_remain>=80) {
-		food_remain =80;
+	if ((food_remain+GhostAmount)>=81) {
+		food_remain =77;
 	}
 	//50*0.6=30 --> 5 points - lime --> board[i][j] = 1;
 	var ball_5_counter = Math.round(food_remain*0.6);
@@ -151,8 +169,6 @@ function Start(restart=false) {
 	}
 	total_points = ball_5_counter*5 + ball_15_counter*15 + ball_25_counter*25;
 
-	GhostAmount = 2;// TODO: update this after marge with element id
-	GhostAmount = document.getElementById("num_of_monsters").value;// TODO: update this after marge with element id
 	if (GhostAmount==1) {
 		ghost_pink.showGhost = true;
 		ghost_blue.showGhost =false;
@@ -193,6 +209,19 @@ function Start(restart=false) {
 	clock_bonus_sec.sleep = 0;
 	good_drug.showGhost = true;
 	good_drug.sleep = 0;
+	
+	coca.showGhost = true;
+	coca.sleep = 0;
+	
+	ghost_pink.i=0;
+	ghost_pink.j=0;
+	ghost_red.i=9;
+	ghost_red.j=0;
+	ghost_orange.i=0;
+	ghost_orange.j=9;
+	ghost_blue.i=9;
+	ghost_blue.j=9;
+	lives = 5;
 	for (var i = 0; i < 10; i++) {
 		board[i] = new Array();
 		//put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
@@ -201,10 +230,19 @@ function Start(restart=false) {
 				(i == 3 && j == 3) ||
 				(i == 3 && j == 4) ||
 				(i == 3 && j == 5) ||
-				(i == 6 && j == 1) ||
-				(i == 6 && j == 2)
+				(i == 7 && j == 1) ||
+				(i == 7 && j == 2) ||
+				(i == 6 && j == 7)
 			) {
 				board[i][j] = 4;
+			} else if ((
+				(i == 2 && j == 3) ||
+				(i == 1 && j == 3) ||
+				(i == 6 && j == 1) ||
+				(i == 6 && j == 8) ||
+				(i == 7 && j == 8)) && (food_remain<74)
+			) {
+					board[i][j] = 3;
 			} else if (i==ghost_pink.i && j==ghost_pink.j && ghost_pink.showGhost==true) {
 				board[0][0] = ghost_pink.id;
 				ghost_pink.i=0;
@@ -227,7 +265,9 @@ function Start(restart=false) {
 				board[i][j] = clock_bonus_sec.id;
 			}else if (i==good_drug.i && j==good_drug.j && good_drug.showGhost==true) {
 				board[i][j] = good_drug.id;
-			} else {
+			}else if (i==coca.i && j==coca.j && coca.showGhost==true) {
+                                board[i][j] = coca.id;
+                        } else {
 				var randomNum = Math.random();
 				if (randomNum <= (1.0 * food_remain) / cnt) {
 					food_remain--;
@@ -292,6 +332,7 @@ function Start(restart=false) {
 			}
 		}
 	}
+	
 	while (food_remain > 0) {
 		var emptyCell = findRandomEmptyCell(board);
 		board[emptyCell[0]][emptyCell[1]] = 1;
@@ -395,14 +436,17 @@ function Draw() {
 			}//good_drug
 			else if (i==good_drug.i && j==good_drug.j && good_drug.showGhost==true) {
 				context.drawImage(good_drug.image,center.x - (width_cell/2) +2 ,center.y - (height_cell/2)+2,width_cell,height_cell);
-			} else if (board[i][j] == 1) {
+			} //coca - make the ghost to move slow for few seconds
+                        else if (i==coca.i && j==coca.j && coca.showGhost==true) {
+                                context.drawImage(coca.image,center.x - (width_cell/2) +2 ,center.y - (height_cell/2)+2,width_cell,height_cell);
+                        }else if (board[i][j] == 1) {
 				//lime ball
 				let ball_5_color = document.getElementById("5_points").value
 				context.beginPath();
-				context.arc(center.x, center.y, (canvas.width)/30, 0, 2 * Math.PI); // circle
+				context.arc(center.x, center.y, (canvas.width)/50, 0, 2 * Math.PI); // circle
 				context.fillStyle = ball_5_color; //color
 				context.fill();
-				context.font="30px Arial";
+				context.font="12px Arial";
 				context.textAlign = "center";
 				context.strokeStyle = "black"; //pts color
 				context.strokeText("5",center.x,center.y);
@@ -411,10 +455,10 @@ function Draw() {
 				//"blue ball
 				let ball_15_color = document.getElementById("15_points").value
 				context.beginPath();
-				context.arc(center.x, center.y, (canvas.width)/30, 0, 2 * Math.PI); // circle
+				context.arc(center.x, center.y, (canvas.width)/50, 0, 2 * Math.PI); // circle
 				context.fillStyle = ball_15_color; //color
 				context.fill();	
-				context.font="30px Arial";
+				context.font="12px Arial";
 				context.textAlign = "center";
 				context.strokeStyle = "white"; //pts color
 				context.strokeText("15",center.x,center.y);
@@ -423,10 +467,10 @@ function Draw() {
 				//red ball
 				let ball_25_color = document.getElementById("25_points").value
 				context.beginPath();
-				context.arc(center.x, center.y, (canvas.width)/30, 0, 2 * Math.PI); // circle
+				context.arc(center.x, center.y, (canvas.width)/50, 0, 2 * Math.PI); // circle
 				context.fillStyle = ball_25_color; //color
 				context.fill();
-				context.font="30px Arial";
+				context.font="12px Arial";
 				context.textAlign = "center";
 				context.strokeStyle = "white"; //pts color
 				context.strokeText("25",center.x,center.y);
@@ -434,22 +478,18 @@ function Draw() {
 			} else if (board[i][j] == 4) {
 				//walls
 				//the original part was :
-				// context.beginPath();
-				// context.rect(center.x - (canvas.width)/20, center.y - (canvas.width)/20, (canvas.width)/10, (canvas.width)/10);
-				// context.fillStyle = "grey"; //color
-				// context.fill();
-				//
+				context.beginPath();
+				context.rect(center.x - (canvas.width)/20, center.y - (canvas.width)/20, (canvas.width)/20, (canvas.width)/10);
+				context.fillStyle = "#383838"; //color
+				context.fill();
+				context.strokeStyle = "#303030";
+				context.stroke();
+			} else if (board[i][j] == 3) {
 				context.beginPath();
 				context.rect(center.x - (canvas.width)/20, center.y - (canvas.width)/20, (canvas.width)/10, (canvas.width)/20);
-				context.fillStyle = "grey"; //color
+				context.fillStyle = "#383838"; //color
 				context.fill();
-				context.beginPath();
-				context.rect(center.x - (canvas.width)/20, center.y, (canvas.width)/10, (canvas.width)/20);
-				context.fillStyle = "darkorange"; //color
-				context.fill();
-				context.beginPath();
-				context.rect(center.x - (canvas.width)/20, center.y - (canvas.width)/20, (canvas.width)/10, (canvas.width)/10);
-				context.strokeStyle = "black"; //color
+				context.strokeStyle = "#303030";
 				context.stroke();
 			}
 		}
@@ -457,13 +497,13 @@ function Draw() {
 }
 
 function UpdatePosition() {
-	if (time_elapsed>= game_timer_app.value) {
+	if (time_elapsed>= game_timer_app.value || score>=total_points) {
 		End();
-	}else {
+	}else if (!paused && game_on) {
 		board[shape.i][shape.j] = 0;
 		var x = GetKeyPressed();
 		if (x == 1) {
-			if (shape.j > 0 && board[shape.i][shape.j - 1] != 4) {//up
+			if (shape.j > 0 && board[shape.i][shape.j - 1] != 4 && board[shape.i][shape.j - 1] != 3) {//up
 				shape.j--;
 				eye_x = 12;
 				eye_y = 4;
@@ -475,7 +515,7 @@ function UpdatePosition() {
 			}
 		}
 		if (x == 2) {
-			if (shape.j < 9 && board[shape.i][shape.j + 1] != 4) {//down
+			if (shape.j < 9 && board[shape.i][shape.j + 1] != 4 && board[shape.i][shape.j + 1] != 3 ) {//down
 				shape.j++;
 				eye_x = -12;
 				eye_y = -4;			
@@ -486,7 +526,7 @@ function UpdatePosition() {
 			}
 		}
 		if (x == 3) {
-			if (shape.i > 0 && board[shape.i - 1][shape.j] != 4) {//left
+			if (shape.i > 0 && board[shape.i - 1][shape.j] != 4 && board[shape.i - 1][shape.j] != 3 ) {//left
 				shape.i--;
 				eye_x = -5;
 				eye_y = 14;
@@ -497,7 +537,7 @@ function UpdatePosition() {
 			}
 		}
 		if (x == 4) {
-			if (shape.i < 9 && board[shape.i + 1][shape.j] != 4) {//right
+			if (shape.i < 9 && board[shape.i + 1][shape.j] != 4 && board[shape.i + 1][shape.j] != 3) {//right
 				shape.i++;
 				eye_x = 5;
 				eye_y = 14;			
@@ -521,6 +561,36 @@ function UpdatePosition() {
 					//TODO: Notify user!!!
 			lives+=1;
 			good_drug.showGhost=false;
+		}else if(board[shape.i][shape.j]==14) {//coca - ghost should move slow for 5 seconds
+                        //TODO: Notify user!!!
+                        //clock_bonus_sec.showGhost=false;
+                        coca.showGhost=false;
+                        window.clearInterval(interval_ghosts);
+                        interval_ghosts = setInterval(UpdatePositionGhosts,1150);
+                        good_drug.showGhost=false;
+                        board[good_drug.i][good_drug.j]=0;
+                        pac_color = "lime";
+                        board[coca.i][coca.j]=0;
+                        
+                        ghost_pink.image.src = "./photos/police_1.png";
+                        ghost_blue.image.src = "./photos/police_2.png";
+                        ghost_orange.image.src = "./photos/police_1.png";
+                        ghost_red.image.src = "./photos/police_2.png";
+                        setTimeout(function(){
+                                pac_color = "yellow";
+                                window.clearInterval(interval_ghosts);
+                                interval_ghosts = setInterval(UpdatePositionGhosts,215);
+                                [good_drug.i][good_drug.j]=findRandomEmptyCell(board);
+                                board[good_drug.i][good_drug.j]=13;
+                                [coca.i][coca.j]=findRandomEmptyCell(board);
+                                board[coca.i][coca.j]=14;
+                                good_drug.showGhost=true;
+                                coca.showGhost=true;
+                                ghost_pink.image.src = "./photos/ghost_pink.png";
+                                ghost_blue.image.src = "./photos/ghost_blue.png";
+                                ghost_orange.image.src = "./photos/ghost_orange.png";
+                                ghost_red.image.src = "./photos/ghost_red.png";
+                        },10000);
 		}else if (board[shape.i][shape.j] == 1 || board[shape.i][shape.j] == 5 || board[shape.i][shape.j] == 6) {
 			ball_pick_sound.play();
 			if (board[shape.i][shape.j] == 1) {//lime ball = 5 points
@@ -530,7 +600,7 @@ function UpdatePosition() {
 			} else if (board[shape.i][shape.j] == 6) {//red ball = 25 points
 				score+=25;
 			}
-		} else if (board[shape.i][shape.j]>=7 && board[shape.i][board.shape.j]<=10) {
+		} else if (board[shape.i][shape.j]>=7 && board[shape.i][shape.j]<=10) {
 			GoIntoGhost();
 		}
 	
@@ -543,9 +613,6 @@ function UpdatePosition() {
 		}
 		if (score == total_points) {
 			End();
-			// window.clearInterval(interval);
-			// window.clearInterval(interval_ghosts);
-			// window.alert("Game completed");
 		} else {
 			Draw();
 		}
@@ -559,6 +626,16 @@ function UpdatePosition() {
 function showAndHideDivs(currentScreen)
 {
 
+	var time_before;
+
+	if (game_on) {
+		paused = true;
+		time_before = time_elapsed;
+	}
+	var killId = setTimeout(function() {
+		for (var i = killId; i > 0; i--) clearInterval(i)
+	  }, 10);
+	
 	switch(currentScreen)
 	{
 		case "welcome": // start mode
@@ -571,6 +648,8 @@ function showAndHideDivs(currentScreen)
 			$('#time').hide();
 			$('#game').hide();
 			$('#settings_side').hide();
+			$('#footer').show();
+			game_on = false;
 			break;
 		case "register": // start mode
 			$('#Welcome').hide();
@@ -582,6 +661,8 @@ function showAndHideDivs(currentScreen)
 			$('#time').hide();
 			$('#game').hide();
 			$('#settings_side').hide();
+			$('#footer').show();
+			game_on = false;
 			break;
 		case "login": // start mode
 			$('#Welcome').hide();
@@ -593,6 +674,9 @@ function showAndHideDivs(currentScreen)
 			$('#time').hide();
 			$('#game').hide();
 			$('#settings_side').hide();
+			$('#footer').show();
+			game_on = false;
+
 			break;
 		case "about": // start mode
 			$('#Welcome').hide();
@@ -604,6 +688,8 @@ function showAndHideDivs(currentScreen)
 			$('#time').hide();
 			$('#game').hide();
 			$('#settings_side').hide();
+			$('#footer').show();
+
 			break;
 
 		case "settings": // start mode
@@ -617,6 +703,9 @@ function showAndHideDivs(currentScreen)
 			$('#time').hide();
 			$('#game').hide();
 			$('#settings_side').hide();
+			$('#footer').show();
+			game_on = false;
+			
 			break;
 
 		case "game": // start mode
@@ -629,128 +718,89 @@ function showAndHideDivs(currentScreen)
 			$('#score').show();
 			$('#time').show();
 			$('#game').show();
+			$('#footer').hide();
 			context = canvas.getContext("2d");
 			life_context = life_canvas.getContext("2d");
 			Start();
 			break;
 	}
-
-
-
+	
+	if (game_on) {
+		interval = setInterval(UpdatePosition,200);
+		interval_ghosts = setInterval(UpdatePositionGhosts,315);
+		if(move_50_points.showGhost) {
+			interval_move_50 = setInterval(UpdatePosition50PointsCharacter,1001);
+		}
+		time_elapsed = time_before;
+		document.getElementById("game_time").innerHTML = time_elapsed;
+		paused = false;
+	}	
 
 
 }
-// this function changes the div that we want to see on click.
-// need to add the canvas to this function
-// function show1(shown,hidden1,hidden2,hidden3) {
-// 	$('#Welcome').show();
-// 	$('#Register').hide();
-// 	$('#Login').hide();
-// 	$('#About').hide();
-// 	$('#game_screen').hide();
-// 	$('#Settings').hide();
-// 	$('#score').hide();
-// 	$('#time').hide();
-// 	$('#game').hide();
-
-
-//   return false;
-// }
-// function show2(shown,hidden1,hidden2,hidden3) {
-// 	$('#Welcome').hide();
-// 	$('#Register').show();
-// 	$('#Login').hide();
-// 	$('#About').hide();
-// 	$('#game_screen').hide();
-// 	$('#Settings').hide();
-// 	$('#score').hide();
-// 	$('#time').hide();
-// 	$('#game').hide();
-
-//   return false;
-// }
-// function show3(shown,hidden1,hidden2,hidden3) {
-// 	$('#Welcome').hide();
-// 	$('#Register').hide();
-// 	$('#Login').show();
-// 	$('#About').hide();
-// 	$('#game_screen').hide();
-// 	$('#Settings').hide();
-// 	$('#score').hide();
-// 	$('#time').hide();
-// 	$('#game').hide();
-
-//   return false;
-// }
-// function show4(shown,hidden1,hidden2,hidden3) {
-// 	$('#Welcome').hide();
-// 	$('#Register').hide();
-// 	$('#Login').hide();
-// 	$('#About').show();
-// 	$('#game_screen').hide();
-// 	$('#Settings').hide();
-// 	$('#score').hide();
-// 	$('#time').hide();
-// 	$('#game').hide();
-
-//   return false;
-// }
-
 
 
 //ghosts
 function UpdatePositionGhosts() {
-	if(ghost_pink.showGhost) {
-		GhostStep(ghost_pink);
-	}
-	if(ghost_blue.showGhost) {
-		GhostStep(ghost_blue);
-	}
-	if(ghost_orange.showGhost) {
-		GhostStep(ghost_orange);
-	}
-	if(ghost_red.showGhost) {
-		GhostStep(ghost_red);
-	}
-	if(clock_bonus_sec.showGhost && Math.round(time_elapsed)%7==0) {
-		board[clock_bonus_sec.i][clock_bonus_sec.j] = clock_bonus_sec.sleep;
-		if (board[clock_bonus_sec.i][clock_bonus_sec.j] == 2) {
-			clock_bonus_sec.showGhost=false;
-			score = score +50;
-			board[clock_bonus_sec.i][clock_bonus_sec.j] = 0;
-		} else {
-			[clock_bonus_sec.i,clock_bonus_sec.j] = findRandomEmptyCell(board);
-			board[clock_bonus_sec.i][clock_bonus_sec.j]=clock_bonus_sec.id;
+	if (!paused && game_on) {
+		if(ghost_pink.showGhost) {
+			GhostStep(ghost_pink);
 		}
-	}
-	if(good_drug.showGhost && Math.round(time_elapsed)%13==0) {
-		board[good_drug.i][good_drug.j] = good_drug.sleep;
-		if (board[good_drug.i][good_drug.j] == 2) {
-			good_drug.showGhost=false;
-			lives+=1;
-			board[good_drug.i][good_drug.j] = 0;
-		} else {
-			[good_drug.i,good_drug.j] = findRandomEmptyCell(board);
-			board[good_drug.i][good_drug.j]=good_drug.id;
+		if(ghost_blue.showGhost) {
+			GhostStep(ghost_blue);
 		}
+		if(ghost_orange.showGhost) {
+			GhostStep(ghost_orange);
+		}
+		if(ghost_red.showGhost) {
+			GhostStep(ghost_red);
+		}
+		if(clock_bonus_sec.showGhost && Math.round(time_elapsed)%7==0) {
+			board[clock_bonus_sec.i][clock_bonus_sec.j] = clock_bonus_sec.sleep;
+			if (board[clock_bonus_sec.i][clock_bonus_sec.j] == 2) {
+				clock_bonus_sec.showGhost=false;
+				score = score +50;
+				board[clock_bonus_sec.i][clock_bonus_sec.j] = 0;
+			} else {
+				[clock_bonus_sec.i,clock_bonus_sec.j] = findRandomEmptyCell(board);
+				board[clock_bonus_sec.i][clock_bonus_sec.j]=clock_bonus_sec.id;
+			}
+		}
+		if(good_drug.showGhost && Math.round(time_elapsed)%13==0) {
+			board[good_drug.i][good_drug.j] = good_drug.sleep;
+			if (board[good_drug.i][good_drug.j] == 2) {
+				good_drug.showGhost=false;
+				lives+=1;
+				board[good_drug.i][good_drug.j] = 0;
+			} else {
+				[good_drug.i,good_drug.j] = findRandomEmptyCell(board);
+				board[good_drug.i][good_drug.j]=good_drug.id;
+			}
+		}
+			if(coca.showGhost && Math.round(time_elapsed)%11==0) {
+					board[coca.i][coca.j] = coca.sleep;
+					if (board[coca.i][coca.j] != 2) {
+							[coca.i,coca.j] = findRandomEmptyCell(board);
+							board[coca.i][coca.j]=coca.id;
+					}
+			}	
+		Draw();
 	}
-	Draw();
 }
 
 function UpdatePosition50PointsCharacter(){
-	if(move_50_points.showGhost) {
+	if(move_50_points.showGhost && !paused && game_on) {
 		board[move_50_points.i][move_50_points.j] = move_50_points.sleep;
 		if (board[move_50_points.i][move_50_points.j] == 2) {
 			move_50_points.showGhost=false;
 			score = score +50;
 			board[move_50_points.i][move_50_points.j] = 0;
-			// window.clearInterval(interval_move_50);
 		}else if (Math.round(food_remain)%7==0) {
 			[move_50_points.i,move_50_points.j] = findRandomEmptyCell(board);
 			board[move_50_points.i][move_50_points.j]=move_50_points.id;
 		}
 		 else if (shape.j > move_50_points.j && move_50_points.j >= 0 ) {
-			if (board[move_50_points.i][move_50_points.j-1]!=4 && board[move_50_points.i][move_50_points.j-1]<7) {//avoid collision
+			if (board[move_50_points.i][move_50_points.j-1]!=4 && board[move_50_points.i][move_50_points.j-1]!=3 && board[move_50_points.i][move_50_points.j-1]<7) {//avoid collision
 				move_50_points.j--;
 			} else if (move_50_points.i < shape.i && move_50_points.i >0 ) {
 				move_50_points.i--;
@@ -758,7 +808,7 @@ function UpdatePosition50PointsCharacter(){
 				move_50_points.i++;
 			}
 		} else if (shape.j < move_50_points.j && move_50_points.j < board.length -1) {
-			if (board[move_50_points.i][move_50_points.j+1]!=4 && board[move_50_points.i][move_50_points.j+1]<7) {//avoid collision
+			if (board[move_50_points.i][move_50_points.j+1]!=4 && board[move_50_points.i][move_50_points.j+1]!=3 && board[move_50_points.i][move_50_points.j+1]<7) {//avoid collision
 				move_50_points.j++;
 			} else if (move_50_points.i < shape.i && move_50_points.i >0 ) {
 				move_50_points.i--;
@@ -766,22 +816,13 @@ function UpdatePosition50PointsCharacter(){
 				move_50_points.i++;
 			}
 		} else if (shape.i < move_50_points.i && move_50_points.i < board.length -1) {
-			if ( board[move_50_points.i-1][move_50_points.j]!=4 && board[move_50_points.i-1][move_50_points.j]<7) {//avoid collision
+			if ( board[move_50_points.i-1][move_50_points.j]!=4 && board[move_50_points.i-1][move_50_points.j]!=3 && board[move_50_points.i-1][move_50_points.j]<7) {//avoid collision
 				move_50_points.i++;
 			} else if (move_50_points.j < shape.j && move_50_points.j < board.length -1 ) {
 				move_50_points.j++;
 			} else {
 				move_50_points.j--;
 			}
-		// }else {
-		// 	if (board[move_50_points.i+1][move_50_points.j]!=4 && board[move_50_points.i+1][move_50_points.j]<7) {//avoid collision
-		// 		move_50_points.i++;
-		// 	} else if (move_50_points.j < shape.j && move_50_points.j < board.length -1 ) {
-		// 		move_50_points.j++;
-		// 	} else {
-		// 		move_50_points.j--;
-		// 	}
-		// }
 		} else {
 			[move_50_points.i,move_50_points.j] = findRandomEmptyCell(board);
 			board[move_50_points.i][move_50_points.j]=move_50_points.id;
@@ -791,46 +832,12 @@ function UpdatePosition50PointsCharacter(){
 }
 
 function UpdatePositionClockBonus(){
-	if(clock_bonus_sec.showGhost) {
+	if(clock_bonus_sec.showGhost && !paused && game_on) {
 		board[clock_bonus_sec.i][clock_bonus_sec.j] = clock_bonus_sec.sleep;
 		if (board[clock_bonus_sec.i][clock_bonus_sec.j] == 2) {
 			clock_bonus_sec.showGhost=false;
-			score = score +50;
+            time_elapsed = time_elapsed -5;			
 			board[clock_bonus_sec.i][clock_bonus_sec.j] = 0;
-			// window.clearInterval(interval_move_50);
-		// } else if (shape.j < clock_bonus_sec.j && clock_bonus_sec.j >= 0 ) {
-		// 	if (board[clock_bonus_sec.i][clock_bonus_sec.j-1]!=4 && board[clock_bonus_sec.i][clock_bonus_sec.j-1]<7) {//avoid collision
-		// 		clock_bonus_sec.j--;
-		// 	} else if (clock_bonus_sec.i < shape.i && clock_bonus_sec.i < board.length -1 ) {
-		// 		clock_bonus_sec.i++;
-		// 	} else {
-		// 		clock_bonus_sec.i--;
-		// 	}
-		// } else if (shape.j>clock_bonus_sec.j && clock_bonus_sec.j < board.length -1) {
-		// 	if (board[clock_bonus_sec.i][clock_bonus_sec.j+1]!=4 && board[clock_bonus_sec.i][clock_bonus_sec.j+1]<7) {//avoid collision
-		// 		clock_bonus_sec.j++;
-		// 	} else if (clock_bonus_sec.i < shape.i && clock_bonus_sec.i < board.length -1 ) {
-		// 		clock_bonus_sec.i++;
-		// 	} else {
-		// 		clock_bonus_sec.i--;
-		// 	}
-		// } else if (shape.i < clock_bonus_sec.i && clock_bonus_sec.i > 0) {
-		// 	if ( board[clock_bonus_sec.i-1][clock_bonus_sec.j]!=4 && board[clock_bonus_sec.i-1][clock_bonus_sec.j]<7) {//avoid collision
-		// 		clock_bonus_sec.i--;
-		// 	} else if (clock_bonus_sec.j < shape.j && clock_bonus_sec.j < board.length -1 ) {
-		// 		clock_bonus_sec.j++;
-		// 	} else {
-		// 		clock_bonus_sec.j--;
-		// 	}
-		// }else {
-		// 	if (board[clock_bonus_sec.i+1][clock_bonus_sec.j]!=4 && board[clock_bonus_sec.i+1][clock_bonus_sec.j]<7) {//avoid collision
-		// 		clock_bonus_sec.i++;
-		// 	} else if (clock_bonus_sec.j < shape.j && clock_bonus_sec.j < board.length -1 ) {
-		// 		clock_bonus_sec.j++;
-		// 	} else {
-		// 		clock_bonus_sec.j--;
-		// 	}
-		// }
 		} else {
 			[clock_bonus_sec.i,clock_bonus_sec.j] = findRandomEmptyCell(board);
 			board[clock_bonus_sec.i][clock_bonus_sec.j]=clock_bonus_sec.id;
@@ -872,47 +879,49 @@ function GhostLocationReset() {//set ghost location to grid corners
 }
 
 function GhostStep(ghost) {
-	board[ghost.i][ghost.j]==ghost.sleep;
-	if (board[ghost.i][ghost.j] == 2){
-		GoIntoGhost();
-	} else if (shape.i > ghost.i && ghost.i < board.length -1 ) {
-		if (board[ghost.i+1][ghost.j]!=4 && board[ghost.i+1][ghost.j]<7) {//avoid collision
-			ghost.i++;
-		} else if (ghost.j < shape.j && ghost.j < board.length -1 ) {
-			ghost.j++;
-		} else {
-			ghost.j--;
+	if (!paused && game_on) {
+		board[ghost.i][ghost.j]==ghost.sleep;
+		if (shape.i > ghost.i && ghost.i < board.length -1 ) {
+			if (board[ghost.i+1][ghost.j]!=4 && board[ghost.i+1][ghost.j]!=3 && board[ghost.i+1][ghost.j]<7) {//avoid collision
+				ghost.i++;
+			} else if (ghost.j < shape.j && ghost.j < board.length -1 && board[ghost.i][ghost.j+1]!=3 && board[ghost.i][ghost.j+1]!=4) {
+				ghost.j++;
+			} else if (board[ghost.i][ghost.j-1]!=3 && board[ghost.i][ghost.j-1]!=4){
+				ghost.j--;
+			}
+		} else if (shape.i < ghost.i && ghost.i > 0) {
+			if ( board[ghost.i-1][ghost.j]!=4 && board[ghost.i-1][ghost.j]!=3 && board[ghost.i-1][ghost.j]<7) {//avoid collision
+				ghost.i--;
+			} else if (ghost.j < shape.j && ghost.j < board.length -1 && board[ghost.i][ghost.j+1]!=3 && board[ghost.i][ghost.j+1]!=4) {
+				ghost.j++;
+			} else if(board[ghost.i][ghost.j-1]!=3){
+				ghost.j--;
+			}
+		} else if (shape.j>ghost.j && ghost.j < board.length -1) {
+			if (board[ghost.i][ghost.j+1]!=4 && board[ghost.i][ghost.j+1]!=3 && board[ghost.i][ghost.j+1]<7) {//avoid collision
+				ghost.j++;
+			} else if (ghost.i < shape.i && ghost.i < board.length -1 && board[ghost.i+1][ghost.j]!=3 && board[ghost.i+1][ghost.j]!=4) {
+				ghost.i++;
+			} else if (board[ghost.i-1][ghost.j]!=3 && board[ghost.i-1][ghost.j]!=4){
+				ghost.i--;
+			}
+		} else if (shape.j < ghost.j && ghost.j >= 0 ) {
+			if (board[ghost.i][ghost.j-1]!=4 && board[ghost.i][ghost.j-1]!=3 && board[ghost.i][ghost.j-1]<7) {//avoid collision
+				ghost.j--;
+			} else if (ghost.i < shape.i && ghost.i < board.length -1 && board[ghost.i+1][ghost.j]!=3 && board[ghost.i+1][ghost.j]!=4) {
+				ghost.i++;
+			} else if (board[ghost.i-1][ghost.j]!=3 && board[ghost.i-1][ghost.j]!=4) {
+				ghost.i--;
+			}
 		}
-	} else if (shape.i < ghost.i && ghost.i > 0) {
-		if ( board[ghost.i-1][ghost.j]!=4 && board[ghost.i-1][ghost.j]<7) {//avoid collision
-			ghost.i--;
-		} else if (ghost.j < shape.j && ghost.j < board.length -1 ) {
-			ghost.j++;
-		} else {
-			ghost.j--;
-		}
-	} else if (shape.j>ghost.j && ghost.j < board.length -1) {
-		if (board[ghost.i][ghost.j+1]!=4 && board[ghost.i][ghost.j+1]<7) {//avoid collision
-			ghost.j++;
-		} else if (ghost.i < shape.i && ghost.i < board.length -1 ) {
-			ghost.i++;
-		} else {
-			ghost.i--;
-		}
-	} else if (shape.j < ghost.j && ghost.j >= 0 ) {
-		if (board[ghost.i][ghost.j-1]!=4 && board[ghost.i][ghost.j-1]<7) {//avoid collision
-			ghost.j--;
-		} else if (ghost.i < shape.i && ghost.i < board.length -1 ) {
-			ghost.i++;
-		} else {
-			ghost.i--;
-		}
+		board[ghost.i][ghost.j]==ghost.id;
+
 	}
-	board[ghost.i][ghost.j]==ghost.id;
 }
 
 function GoIntoGhost() {
 	ghost_sound.play();
+	total_points=total_points -10;
 	score = score -10;
 	lives--;
 	if (lives==0) {
@@ -928,7 +937,6 @@ function GoIntoGhost() {
 
 function UpdateSideSettingsMenuValues() {
 	let up_key_move = document.getElementById("up").value;
-	console.log(up_key_move);
 	document.getElementById("up_key").innerHTML = "&#8593; :" + up_key_move;
 	let right_key_move = document.getElementById("right").value;
 	document.getElementById("right_key").innerHTML = "&#8594; :" + right_key_move;
@@ -939,7 +947,7 @@ function UpdateSideSettingsMenuValues() {
 	let balls_number_side = document.getElementById("balls").value;
 	document.getElementById("balls_amount_side").innerHTML = "Number of balls : " + balls_number_side;
 	let time_side_show = document.getElementById("game_time").value;
-	document.getElementById("time_side").innerHTML = "Gamie time : "+time_side_show;
+	document.getElementById("time_side").innerHTML = "Game time : "+time_side_show;
 	let number_of_mons = document.getElementById("num_of_monsters").value;
 	document.getElementById("monster_number_side").innerHTML = "Number of monsters : " + number_of_mons;
 	$('#settings_side').show();
@@ -947,16 +955,9 @@ function UpdateSideSettingsMenuValues() {
 }
 
 function End() {
-	window.clearInterval(interval);
-	window.clearInterval(interval_ghosts);
-	if(move_50_points.show) {
-		move_50_points.show=false;
-		window.clearInterval(interval_move_50);
-	}
-	if(clock_bonus_sec.show) {
-		clock_bonus_sec.show=false;
-		//window.clearInterval(interval_move_50);
-	}
+	var killId = setTimeout(function() {
+		for (var i = killId; i > 0; i--) clearInterval(i)
+	  }, 10);
 	var msg;
 	if (time_elapsed>=game_timer_app.value) {
 		if (lives==0) {
@@ -979,4 +980,119 @@ function End() {
 	lives=5;
 	showAndHideDivs("settings");
 }
+
+
+function ResetAllData(ask_user=true){
+	paused = true;
+	game_on = false;
+	var killId = setTimeout(function() {
+		for (var i = killId; i > 0; i--) clearInterval(i)
+	  }, 10);	
+	if (ask_user){
+		ans =confirm("Are you sure yow want to start a new game ?"); 
+	} else {
+		ans = true;
+	}
+	if (ans == true) {
+		food_remain = document.getElementById("balls_amount_side").value;
+		total_points=food_remain*0.6*5+food_remain*0.3*15+food_remain*0.1*25;
+		lives = 5;
+		score=0;
+		start_time = new Date();
+		time_elapsed = 0;
+		ghost_pink.showGhost =true;
+		ghost_pink.sleep = 0;
+		ghost_pink.i=0;
+		ghost_pink.j=0;
+		//blue
+		ghost_blue.showGhost =true;
+		ghost_blue.sleep = 0;
+		ghost_blue.i=9;
+		ghost_blue.j=9;
+		//orange
+		ghost_orange.showGhost =true;
+		ghost_orange.sleep = 0;
+		ghost_orange.i=0;
+		ghost_orange.j=9;
+		//red
+		ghost_red.showGhost =true;
+		ghost_red.sleep = 0;
+		ghost_red.i=9;
+		ghost_red.j=0;
+
+		move_50_points.showGhost = true;
+		move_50_points.sleep = 0;
+		move_50_points.i=5;
+		move_50_points.j=5;
+
+		clock_bonus_sec.showGhost = true;
+		clock_bonus_sec.sleep = 0;
+		clock_bonus_sec.i=5;
+		clock_bonus_sec.j=5;
+
+		good_drug.showGhost = true;
+		good_drug.sleep = 0;
+		good_drug.i=7;
+		good_drug.j=7;
+		
+                coca.showGhost = true;
+                coca.sleep = 0;
+                coca.i=1;
+                coca.j=8;
+		
+		game_on = false;
+		showAndHideDivs("settings");
+	} else {
+		interval = setInterval(UpdatePosition,120);
+		interval_ghosts = setInterval(UpdatePositionGhosts,215);
+		if(move_50_points.showGhost) {
+			interval_move_50 = setInterval(UpdatePosition50PointsCharacter,1001);
+		}
+		paused = false;
+		game_on = true;
+	}
+}
+
+
+function Pause(){
+	paused = true;
+	game_on = false;
+	var killId = setTimeout(function() {
+		for (var i = killId; i > 0; i--) clearInterval(i)
+	  }, 10);
+	window.alert("OK OK we stooped !!!\nmeanhile we'll all sit and wait for you until you click \'OK\' ");
+	interval = setInterval(UpdatePosition,120);
+	interval_ghosts = setInterval(UpdatePositionGhosts,215);
+	if(move_50_points.showGhost) {
+		interval_move_50 = setInterval(UpdatePosition50PointsCharacter,1001);
+	}
+	paused = false;
+	game_on = true;
+
+}
+
+function PauseAbout(){
+	paused = true;
+	game_on = false;
+	var killId = setTimeout(function() {
+		for (var i = killId; i > 0; i--) clearInterval(i)
+	  }, 10);
+
+	ans =confirm("Sure you want to read the \"About\" ? \n if you want to read the about, All data on this game will be deleted and you will have to start a new game"); 
+	if (ans) {
+		ResetAllData(false);
+		$('#About').show();
+        document.getElementById("dialog").showModal();
+		
+	} else {
+		paused = false;
+		game_on = true;
+		interval = setInterval(UpdatePosition,120);
+		interval_ghosts = setInterval(UpdatePositionGhosts,215);
+		if(move_50_points.showGhost) {
+			interval_move_50 = setInterval(UpdatePosition50PointsCharacter,1001);
+		}
+	}
+}
+
 
