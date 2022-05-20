@@ -279,8 +279,13 @@ p{
 
 .game_stats {
   /* margin-inline-start: -260px; */
-  margin-bottom: 450px;
-  margin-left: 500px;
+  /* margin-bottom: 450px;
+  margin-left: 500px; */
+  position: fixed;
+  bottom:50%;
+  left:50%;
+  margin-bottom: -100px;
+  margin-left: -500px;
 }
 .game{
   /* margin-left: 600px; */
@@ -289,6 +294,11 @@ p{
 /* ------------------------------------------------------------------------------ */
  .game_canvas{
    background-color: black;
+   position: fixed;
+   bottom:50%;
+   left:50%;
+   margin-bottom: -300px;
+   margin-left: -300px;
  }
 
  
