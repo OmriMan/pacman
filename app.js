@@ -880,10 +880,9 @@ function GhostLocationReset() {//set ghost location to grid corners
 function GhostStep(ghost) {
 	if (!paused && game_on) {
 		board[ghost.i][ghost.j]==ghost.sleep;
-		
 		if (board[ghost.i][ghost.j] == 2){
 			GoIntoGhost();
-		} else if (Math.round(time_elapsed) %4 == 0) {
+		} else if (GhostAmount>1 && (Math.round(time_elapsed) %GhostAmount == 0)) {
 			board[ghost.i][ghost.j]==ghost.id;
 		} else if (shape.i > ghost.i && ghost.i < board.length -1 ) {
 			if (board[ghost.i+1][ghost.j]!=4 && board[ghost.i+1][ghost.j]!=3 && board[ghost.i+1][ghost.j]<7) {//avoid collision
