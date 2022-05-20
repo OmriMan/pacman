@@ -656,6 +656,7 @@ function showAndHideDivs(currentScreen)
 			$('#settings_side').hide();
 			$('#footer').show();
 			game_on = false;
+			game_song.pause();
 			break;
 		case "register": // start mode
 			$('#Welcome').hide();
@@ -670,6 +671,7 @@ function showAndHideDivs(currentScreen)
 			$('#settings_side').hide();
 			$('#footer').show();
 			game_on = false;
+			game_song.pause();
 			break;
 		case "login": // start mode
 			$('#Welcome').hide();
@@ -684,6 +686,7 @@ function showAndHideDivs(currentScreen)
 			$('#settings_side').hide();
 			$('#footer').show();
 			game_on = false;
+			game_song.pause();
 
 			break;
 		case "about": // start mode
@@ -698,6 +701,7 @@ function showAndHideDivs(currentScreen)
 			$('#game').hide();
 			$('#settings_side').hide();
 			$('#footer').show();
+			game_song.pause();
 
 			break;
 
@@ -715,6 +719,7 @@ function showAndHideDivs(currentScreen)
 			$('#settings_side').hide();
 			$('#footer').show();
 			game_on = false;
+			game_song.pause();
 			
 			break;
 
@@ -997,6 +1002,7 @@ function End() {
 function ResetAllData(ask_user=true){
 	paused = true;
 	game_on = false;
+	game_song.pause();
 	var killId = setTimeout(function() {
 		for (var i = killId; i > 0; i--) clearInterval(i)
 	  }, 10);	
@@ -1062,6 +1068,7 @@ function ResetAllData(ask_user=true){
 		}
 		paused = false;
 		game_on = true;
+		game_song.play();
 	}
 }
 
@@ -1072,6 +1079,7 @@ function Pause(){
 	var killId = setTimeout(function() {
 		for (var i = killId; i > 0; i--) clearInterval(i)
 	  }, 10);
+	game_song.pause();
 	window.alert("OK OK we stooped !!!\nmeanhile we'll all sit and wait for you until you click \'OK\' ");
 	interval = setInterval(UpdatePosition,interval_time);
 	interval_ghosts = setInterval(UpdatePositionGhosts,interval_ghosts_time);
@@ -1080,6 +1088,7 @@ function Pause(){
 	}
 	paused = false;
 	game_on = true;
+	game_song.play();
 
 }
 
@@ -1089,7 +1098,8 @@ function PauseAbout(){
 	var killId = setTimeout(function() {
 		for (var i = killId; i > 0; i--) clearInterval(i)
 	  }, 10);
-
+	
+	game_song.pause();
 	ans =confirm("Sure you want to read the \"About\" ? \n if you want to read the about, All data on this game will be deleted and you will have to start a new game"); 
 	if (ans) {
 		ResetAllData(false);
@@ -1103,7 +1113,9 @@ function PauseAbout(){
 		interval_ghosts = setInterval(UpdatePositionGhosts,interval_ghosts_time);
 		if(move_50_points.showGhost) {
 			interval_move_50 = setInterval(UpdatePosition50PointsCharacter,interval_move_50_time);
+
 		}
+		game_song.play();
 	}
 }
 
